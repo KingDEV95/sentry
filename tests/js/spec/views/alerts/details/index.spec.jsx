@@ -18,7 +18,7 @@ describe('IncidentDetails', function() {
 
   const createWrapper = (props, routerCtx) =>
     mountWithTheme(
-      <IncidentDetails params={params} {...props} />,
+      <IncidentDetails params={params} organization={organization} {...props} />,
       routerCtx ?? routerContext
     );
 
@@ -227,5 +227,19 @@ describe('IncidentDetails', function() {
     // Click again to re-subscribe
     wrapper.find('SubscribeButton').simulate('click');
     expect(subscribe).toHaveBeenCalled();
+  });
+
+  it('renders Errors as data source for Dataset.ERRORS', async function() {
+    const wrapper = createWrapper();
+    await tick();
+    wrapper.update();
+
+    const ruleDetails = wrapper.find('RuleDetails');
+    expect(
+      ruleDetails
+        .find('span')
+        .at(1)
+        .text()
+    ).toBe('Errors');
   });
 });

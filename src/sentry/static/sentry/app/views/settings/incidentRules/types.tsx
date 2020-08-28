@@ -18,9 +18,7 @@ export type UnsavedTrigger = {
   // id yet
   alertRuleId?: string;
   label: string;
-  thresholdType: AlertRuleThresholdType;
   alertThreshold: number | '' | null;
-  resolveThreshold: number | '' | null;
   actions: Action[];
 };
 
@@ -48,6 +46,8 @@ export type UnsavedIncidentRule = {
   timeWindow: number;
   triggers: Trigger[];
   aggregate: string;
+  thresholdType: AlertRuleThresholdType;
+  resolveThreshold: number | '' | null;
 };
 
 export type SavedIncidentRule = UnsavedIncidentRule & {
@@ -80,11 +80,12 @@ export type ProjectSelectOption = {
 export enum ActionType {
   EMAIL = 'email',
   SLACK = 'slack',
-  PAGER_DUTY = 'pagerduty',
+  PAGERDUTY = 'pagerduty',
+  MSTEAMS = 'msteams',
 }
 
 export enum TargetType {
-  // The name can be customized for each integration. Email for email, channel for slack, service for Pagerduty). We probably won't support this for email at first, since we need to be careful not to enable spam
+  // The name can be customized for each integration. Email for email, channel for Slack, service for PagerDuty). We probably won't support this for email at first, since we need to be careful not to enable spam
   SPECIFIC = 'specific',
 
   // Just works with email for now, grabs given user's email address
@@ -117,6 +118,11 @@ export type MetricActionTemplate = {
    * Integration id for this `type`, should be passed to backend as `integrationId` when creating an action
    */
   integrationId: number;
+
+  /**
+   * For some available actions, we pass in the list of available targets.
+   */
+  options: Array<{label: string; value: any}> | null;
 };
 
 /**
@@ -162,4 +168,9 @@ export type UnsavedAction = {
    * The id of the integration, can be null (e.g. email) or undefined (server errors when posting w/ null value)
    */
   integrationId?: number | null;
+
+  /**
+   * For some available actions, we pass in the list of available targets.
+   */
+  options: Array<{label: string; value: any}> | null;
 };

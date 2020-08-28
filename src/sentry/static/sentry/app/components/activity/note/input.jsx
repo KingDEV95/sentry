@@ -7,6 +7,7 @@ import {t} from 'app/locale';
 import Button from 'app/components/button';
 import ConfigStore from 'app/stores/configStore';
 import NavTabs from 'app/components/navTabs';
+import {IconMarkdown} from 'app/icons';
 import marked from 'app/utils/marked';
 import space from 'app/styles/space';
 import textStyles from 'app/styles/text';
@@ -210,7 +211,7 @@ class NoteInput extends React.Component {
             </NoteInputNavTabLink>
           </NoteInputNavTab>
           <MarkdownTab>
-            <MarkdownIcon className="icon-markdown" />
+            <IconMarkdown />
             <MarkdownSupported>{t('Markdown supported')}</MarkdownSupported>
           </MarkdownTab>
         </NoteInputNavTabs>
@@ -226,28 +227,24 @@ class NoteInput extends React.Component {
               style={mentionStyle({minHeight})}
               placeholder={placeholder}
               onChange={this.handleChange}
-              onBlur={this.handleBlur}
               onKeyDown={this.handleKeyDown}
               value={value}
               required
               autoFocus
-              displayTransform={(_id, display, type) =>
-                `${type === 'member' ? '@' : ''}${display}`
-              }
-              markup="**[sentry.strip:__type__]__display__**"
             >
               <Mention
-                type="member"
                 trigger="@"
                 data={memberList}
                 onAdd={this.handleAddMember}
+                displayTransform={(_id, display) => `@${display}`}
+                markup="**[sentry.strip:member]__display__**"
                 appendSpaceOnAdd
               />
               <Mention
-                type="team"
                 trigger="#"
                 data={teams}
                 onAdd={this.handleAddTeam}
+                markup="**[sentry.strip:team]__display__**"
                 appendSpaceOnAdd
               />
             </MentionsInput>
@@ -422,10 +419,6 @@ const MarkdownTab = styled(NoteInputNavTab)`
 const MarkdownSupported = styled('span')`
   margin-left: ${space(0.5)};
   font-size: 14px;
-`;
-
-const MarkdownIcon = styled('span')`
-  font-size: 20px;
 `;
 
 const NotePreview = styled('div')`

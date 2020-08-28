@@ -31,6 +31,11 @@ const getSelectedRange = wrapper => [
     .text(),
 ];
 
+function getTimeText(element) {
+  const valueRegex = /value="([0-9]{2}:[0-9]{2})"/;
+  return element.html().match(valueRegex)[1];
+}
+
 describe('DateRange', function() {
   let wrapper;
   const onChange = jest.fn();
@@ -100,23 +105,101 @@ describe('DateRange', function() {
     it('changes start time for existing date', function() {
       wrapper
         .find('input[data-test-id="startTime"]')
-        .simulate('blur', {target: {value: '11:00'}});
+        .simulate('change', {target: {value: '11:00'}});
 
       expect(onChange).toHaveBeenLastCalledWith({
         start: new Date('2017-10-13T15:00:00.000Z'),
         end: new Date('2017-10-17T02:38:00.000Z'),
+        hasDateRangeErrors: false,
       });
     });
 
     it('changes end time for existing date', function() {
       wrapper
         .find('input[data-test-id="endTime"]')
-        .simulate('blur', {target: {value: '12:00'}});
+        .simulate('change', {target: {value: '12:00'}});
 
       expect(onChange).toHaveBeenLastCalledWith({
         start: new Date('2017-10-14T02:38:00.000Z'),
         end: new Date('2017-10-16T16:00:00.000Z'),
+        hasDateRangeErrors: false,
       });
+    });
+
+    it('does not change for bad start/end time', function() {
+      wrapper
+        .find('input[data-test-id="startTime"]')
+        .simulate('change', {target: {value: null}});
+
+      expect(onChange).not.toHaveBeenLastCalledWith();
+
+      wrapper
+        .find('input[data-test-id="endTime"]')
+        .simulate('change', {target: {value: null}});
+
+      expect(onChange).not.toHaveBeenLastCalledWith();
+    });
+
+    it('updates start time input only if not focused', async function() {
+      const time = start.getTime() + 60000;
+
+      expect(getTimeText(wrapper.find('input[data-test-id="startTime"]'))).toEqual(
+        '22:38'
+      );
+
+      wrapper.find('input[data-test-id="startTime"]').simulate('focus');
+      await tick();
+      wrapper.update();
+
+      wrapper.setProps({start: new Date(time)});
+      await tick();
+      wrapper.update();
+
+      // because the prop change happened while the component still has focus, no update
+      expect(getTimeText(wrapper.find('input[data-test-id="startTime"]'))).toEqual(
+        '22:38'
+      );
+
+      wrapper.find('input[data-test-id="startTime"]').simulate('blur');
+      await tick();
+      wrapper.update();
+
+      wrapper.setProps({start: new Date(time)});
+      await tick();
+      wrapper.update();
+
+      // because the prop change happened after the component lost focus, it updates
+      expect(getTimeText(wrapper.find('input[data-test-id="startTime"]'))).toEqual(
+        '22:39'
+      );
+    });
+
+    it('updates end time input only if not focused', async function() {
+      const time = end.getTime() + 60000;
+
+      expect(getTimeText(wrapper.find('input[data-test-id="endTime"]'))).toEqual('22:38');
+
+      wrapper.find('input[data-test-id="endTime"]').simulate('focus');
+      await tick();
+      wrapper.update();
+
+      wrapper.setProps({end: new Date(time)});
+      await tick();
+      wrapper.update();
+
+      // because the prop change happened while the component still has focus, no update
+      expect(getTimeText(wrapper.find('input[data-test-id="endTime"]'))).toEqual('22:38');
+
+      wrapper.find('input[data-test-id="endTime"]').simulate('blur');
+      await tick();
+      wrapper.update();
+
+      wrapper.setProps({end: new Date(time)});
+      await tick();
+      wrapper.update();
+
+      // because the prop change happened after the component lost focus, it updates
+      expect(getTimeText(wrapper.find('input[data-test-id="endTime"]'))).toEqual('22:39');
     });
   });
 
@@ -171,26 +254,106 @@ describe('DateRange', function() {
     it('changes utc start time for existing date', function() {
       wrapper
         .find('input[data-test-id="startTime"]')
-        .simulate('blur', {target: {value: '11:00'}});
+        .simulate('change', {target: {value: '11:00'}});
 
       // Initial start date  is 2017-10-13T22:38:00-0400
       expect(onChange).toHaveBeenLastCalledWith({
         start: new Date('2017-10-13T15:00:00.000Z'),
         end: new Date('2017-10-17T02:38:00.000Z'),
+        hasDateRangeErrors: false,
       });
     });
 
-    it('changes end time for existing date', function() {
+    it('changes utc end time for existing date', function() {
       wrapper
         .find('input[data-test-id="endTime"]')
-        .simulate('blur', {target: {value: '12:00'}});
+        .simulate('change', {target: {value: '12:00'}});
 
       // Initial end time is 2017-10-16T22:38:00-0400
       // Setting this to 12:00 means 2017-10-16T12:00-0400
       expect(onChange).toHaveBeenLastCalledWith({
         start: new Date('2017-10-14T02:38:00.000Z'),
         end: new Date('2017-10-16T16:00:00.000Z'),
+        hasDateRangeErrors: false,
       });
+    });
+
+    it('does not change for bad start/end time', function() {
+      wrapper
+        .find('input[data-test-id="startTime"]')
+        .simulate('change', {target: {value: null}});
+
+      expect(onChange).not.toHaveBeenLastCalledWith();
+
+      wrapper
+        .find('input[data-test-id="endTime"]')
+        .simulate('change', {target: {value: null}});
+
+      expect(onChange).not.toHaveBeenLastCalledWith();
+    });
+
+    it('updates utc start time input only if not focused', async function() {
+      // NOTE: the DateRange component initializes the time inputs with the local time
+      const time = start.getTime() + 60000;
+
+      expect(getTimeText(wrapper.find('input[data-test-id="startTime"]'))).toEqual(
+        '22:38'
+      );
+
+      wrapper.find('input[data-test-id="startTime"]').simulate('focus');
+      await tick();
+      wrapper.update();
+
+      wrapper.setProps({start: new Date(time)});
+      await tick();
+      wrapper.update();
+
+      // because the prop change happened while the component still has focus, no update
+      expect(getTimeText(wrapper.find('input[data-test-id="startTime"]'))).toEqual(
+        '22:38'
+      );
+
+      wrapper.find('input[data-test-id="startTime"]').simulate('blur');
+      await tick();
+      wrapper.update();
+
+      wrapper.setProps({start: new Date(time)});
+      await tick();
+      wrapper.update();
+
+      // because the prop change happened after the component lost focus, it updates
+      expect(getTimeText(wrapper.find('input[data-test-id="startTime"]'))).toEqual(
+        '22:39'
+      );
+    });
+
+    it('updates utc end time input only if not focused', async function() {
+      // NOTE: the DateRange component initializes the time inputs with the local time
+      const time = end.getTime() + 60000;
+
+      expect(getTimeText(wrapper.find('input[data-test-id="endTime"]'))).toEqual('22:38');
+
+      wrapper.find('input[data-test-id="endTime"]').simulate('focus');
+      await tick();
+      wrapper.update();
+
+      wrapper.setProps({end: new Date(time)});
+      await tick();
+      wrapper.update();
+
+      // because the prop change happened while the component still has focus, no update
+      expect(getTimeText(wrapper.find('input[data-test-id="endTime"]'))).toEqual('22:38');
+
+      wrapper.find('input[data-test-id="endTime"]').simulate('blur');
+      await tick();
+      wrapper.update();
+
+      wrapper.setProps({end: new Date(time)});
+      await tick();
+      wrapper.update();
+
+      // because the prop change happened after the component lost focus, it updates
+      expect(getTimeText(wrapper.find('input[data-test-id="endTime"]'))).toEqual('22:39');
     });
   });
 });

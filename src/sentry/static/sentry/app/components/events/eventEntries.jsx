@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import {analytics} from 'app/utils/analytics';
@@ -179,6 +179,7 @@ class EventEntries extends React.Component {
 
     const features =
       organization && organization.features ? new Set(organization.features) : new Set();
+    const hasQueryFeature = features.has('discover-query');
 
     if (!event) {
       return (
@@ -192,7 +193,11 @@ class EventEntries extends React.Component {
 
     return (
       <div className={className} data-test-id="event-entries">
-        {!objectIsEmpty(event.errors) && <EventErrors event={event} />}{' '}
+        {!objectIsEmpty(event.errors) && (
+          <ErrorContainer>
+            <EventErrors event={event} />
+          </ErrorContainer>
+        )}
         {!isShare &&
           (showExampleCommit ? (
             <EventCauseEmpty organization={organization} project={project} />
@@ -218,6 +223,7 @@ class EventEntries extends React.Component {
             orgId={organization.slug}
             projectId={project.slug}
             location={location}
+            hasQueryFeature={hasQueryFeature}
           />
         )}
         {this.renderEntries()}
@@ -236,7 +242,7 @@ class EventEntries extends React.Component {
         {!isShare && event.sdkUpdates && event.sdkUpdates.length > 0 && (
           <EventSdkUpdates event={event} />
         )}
-        {!isShare && event.groupID && features.has('grouping-info') && (
+        {!isShare && event.groupID && (
           <EventGroupingInfo
             projectId={project.slug}
             event={event}
@@ -255,6 +261,16 @@ class EventEntries extends React.Component {
   }
 }
 
+const ErrorContainer = styled('div')`
+  /*
+  Remove border on adjacent context summary box.
+  Once that component uses emotion this will be harder.
+  */
+  & + .context-summary {
+    border-top: none;
+  }
+`;
+
 const BorderlessEventEntries = styled(EventEntries)`
   & ${/* sc-selector */ DataSection} {
     padding: ${space(3)} 0 0 0;
@@ -262,6 +278,9 @@ const BorderlessEventEntries = styled(EventEntries)`
   & ${/* sc-selector */ DataSection}:first-child {
     padding-top: 0;
     border-top: 0;
+  }
+  & ${/* sc-selector */ ErrorContainer} {
+    margin-bottom: ${space(2)};
   }
 `;
 

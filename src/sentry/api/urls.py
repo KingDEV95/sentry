@@ -92,6 +92,7 @@ from .endpoints.organization_environments import OrganizationEnvironmentsEndpoin
 from .endpoints.organization_event_details import OrganizationEventDetailsEndpoint
 from .endpoints.organization_eventid import EventIdLookupEndpoint
 from .endpoints.organization_events import OrganizationEventsEndpoint, OrganizationEventsV2Endpoint
+from .endpoints.organization_events_trends import OrganizationEventsTrendsEndpoint
 from .endpoints.organization_events_facets import OrganizationEventsFacetsEndpoint
 from .endpoints.organization_events_meta import (
     OrganizationEventsMetaEndpoint,
@@ -301,6 +302,7 @@ from sentry.incidents.endpoints.organization_alert_rule_details import (
 )
 from sentry.incidents.endpoints.organization_alert_rule_index import (
     OrganizationAlertRuleIndexEndpoint,
+    OrganizationCombinedRuleIndexEndpoint,
 )
 from sentry.incidents.endpoints.project_alert_rule_details import ProjectAlertRuleDetailsEndpoint
 from sentry.incidents.endpoints.project_alert_rule_index import (
@@ -599,6 +601,11 @@ urlpatterns = [
                     OrganizationAlertRuleIndexEndpoint.as_view(),
                     name="sentry-api-0-organization-alert-rules",
                 ),
+                url(
+                    r"^(?P<organization_slug>[^\/]+)/combined-rules/$",
+                    OrganizationCombinedRuleIndexEndpoint.as_view(),
+                    name="sentry-api-0-organization-combined-rules",
+                ),
                 # Data Export
                 url(
                     r"^(?P<organization_slug>[^\/]+)/data-export/$",
@@ -823,6 +830,11 @@ urlpatterns = [
                     r"^(?P<organization_slug>[^\/]+)/events-meta/$",
                     OrganizationEventsMetaEndpoint.as_view(),
                     name="sentry-api-0-organization-events-meta",
+                ),
+                url(
+                    r"^(?P<organization_slug>[^\/]+)/events-trends/$",
+                    OrganizationEventsTrendsEndpoint.as_view(),
+                    name="sentry-api-0-organization-events-trends",
                 ),
                 url(
                     r"^(?P<organization_slug>[^\/]+)/event-baseline/$",

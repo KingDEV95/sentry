@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {shallow, mountWithTheme} from 'sentry-test/enzyme';
+import {mountWithTheme} from 'sentry-test/enzyme';
 
 import OrganizationMemberRow from 'app/views/settings/organizationMembers/organizationMemberRow';
 
@@ -51,7 +51,7 @@ describe('OrganizationMemberRow', function() {
   beforeEach(function() {});
 
   it('does not have 2fa warning if user has 2fa', function() {
-    const wrapper = shallow(
+    const wrapper = mountWithTheme(
       <OrganizationMemberRow
         {...defaultProps}
         member={{
@@ -63,11 +63,12 @@ describe('OrganizationMemberRow', function() {
         }}
       />
     );
-    expect(wrapper.find('AuthIcon').prop('has2fa')).toBe(true);
+    expect(wrapper.find('IconCheckmark')).toHaveLength(1);
+    expect(wrapper.find('IconFlag')).toHaveLength(0);
   });
 
   it('has 2fa warning if user does not have 2fa enabled', function() {
-    const wrapper = shallow(
+    const wrapper = mountWithTheme(
       <OrganizationMemberRow
         {...defaultProps}
         member={{
@@ -79,7 +80,8 @@ describe('OrganizationMemberRow', function() {
         }}
       />
     );
-    expect(wrapper.find('AuthIcon').prop('has2fa')).toBe(false);
+    expect(wrapper.find('IconCheckmark')).toHaveLength(0);
+    expect(wrapper.find('IconFlag')).toHaveLength(1);
   });
 
   describe('Pending user', function() {
@@ -212,7 +214,7 @@ describe('OrganizationMemberRow', function() {
     });
 
     it('has 2fa warning if user is linked does not have 2fa enabled', function() {
-      const wrapper = shallow(
+      const wrapper = mountWithTheme(
         <OrganizationMemberRow
           {...defaultProps}
           member={{
@@ -228,7 +230,8 @@ describe('OrganizationMemberRow', function() {
         />
       );
 
-      expect(wrapper.find('AuthIcon').prop('has2fa')).toBe(false);
+      expect(wrapper.find('IconCheckmark')).toHaveLength(0);
+      expect(wrapper.find('IconFlag')).toHaveLength(1);
     });
   });
 

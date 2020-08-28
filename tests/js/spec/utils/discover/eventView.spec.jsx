@@ -347,14 +347,14 @@ describe('EventView.fromSavedQuery()', function() {
 
     const eventView2 = EventView.fromSavedQuery({
       ...saved,
-      start: 'invalid',
+      start: '',
     });
 
     expect(eventView.isEqualTo(eventView2)).toBe(false);
 
     const eventView3 = EventView.fromSavedQuery({
       ...saved,
-      end: 'invalid',
+      end: '',
     });
 
     expect(eventView.isEqualTo(eventView3)).toBe(false);
@@ -692,8 +692,8 @@ describe('EventView.getEventsAPIPayload()', function() {
 
     const location = {
       query: {
-        start: 'start',
-        end: 'end',
+        start: '2020-08-12 12:13:14',
+        end: '2020-08-26 12:13:14',
         utc: 'true',
         statsPeriod: '14d',
         cursor: 'some cursor',
@@ -731,8 +731,8 @@ describe('EventView.getEventsAPIPayload()', function() {
 
     const location = {
       query: {
-        start: 'start',
-        end: 'end',
+        start: '',
+        end: '',
         utc: 'true',
         // invalid statsPeriod string
         statsPeriod: 'invalid',
@@ -755,8 +755,8 @@ describe('EventView.getEventsAPIPayload()', function() {
 
     const location2 = {
       query: {
-        start: 'start',
-        end: 'end',
+        start: '',
+        end: '',
         utc: 'true',
         // statsPeriod is omitted here
         cursor: 'some cursor',
@@ -788,7 +788,7 @@ describe('EventView.getEventsAPIPayload()', function() {
 
     const location = {
       query: {
-        start: 'start',
+        start: '',
         utc: 'true',
         statsPeriod: 'invalid',
         cursor: 'some cursor',
@@ -810,7 +810,7 @@ describe('EventView.getEventsAPIPayload()', function() {
 
     const location2 = {
       query: {
-        end: 'end',
+        end: '',
         utc: 'true',
         statsPeriod: 'invalid',
         cursor: 'some cursor',
@@ -984,8 +984,8 @@ describe('EventView.getFacetsAPIPayload()', function() {
 
     const location = {
       query: {
-        start: 'start',
-        end: 'end',
+        start: '',
+        end: '',
         utc: 'true',
         statsPeriod: '14d',
 
@@ -2184,15 +2184,21 @@ describe('EventView.getGlobalSelection()', function() {
     const eventView = new EventView({});
 
     expect(eventView.getGlobalSelection()).toMatchObject({
-      project: [],
-      start: undefined,
-      end: undefined,
-      statsPeriod: undefined,
-      environment: [],
+      projects: [],
+      environments: [],
+      datetime: {
+        start: null,
+        end: null,
+        period: '',
+
+        // event views currently do not support the utc option,
+        // see comment in EventView.getGlobalSelection
+        utc: true,
+      },
     });
   });
 
-  it('returns global selection', function() {
+  it('returns global selection query', function() {
     const state2 = {
       project: [42],
       start: 'start',
@@ -2203,7 +2209,60 @@ describe('EventView.getGlobalSelection()', function() {
 
     const eventView = new EventView(state2);
 
-    expect(eventView.getGlobalSelection()).toMatchObject(state2);
+    expect(eventView.getGlobalSelection()).toMatchObject({
+      projects: state2.project,
+      environments: state2.environment,
+      datetime: {
+        start: state2.start,
+        end: state2.end,
+        period: state2.statsPeriod,
+
+        // event views currently do not support the utc option,
+        // see comment in EventView.getGlobalSelection
+        utc: true,
+      },
+    });
+  });
+});
+
+describe('EventView.getGlobalSelectionQuery()', function() {
+  it('return default global selection query', function() {
+    const eventView = new EventView({});
+
+    expect(eventView.getGlobalSelectionQuery()).toMatchObject({
+      project: [],
+      start: undefined,
+      end: undefined,
+      statsPeriod: undefined,
+      environment: [],
+
+      // event views currently do not support the utc option,
+      // see comment in EventView.getGlobalSelection
+      utc: 'true',
+    });
+  });
+
+  it('returns global selection query', function() {
+    const state2 = {
+      project: [42],
+      start: 'start',
+      end: 'end',
+      statsPeriod: '42d',
+      environment: ['prod'],
+    };
+
+    const eventView = new EventView(state2);
+
+    expect(eventView.getGlobalSelectionQuery()).toMatchObject({
+      ...state2,
+
+      // when generating the query, it converts numbers to strings
+      project: ['42'],
+
+      // event views currently do not support the utc option,
+      // see comment in EventView.getGlobalSelection
+      utc: 'true',
+    });
   });
 });
 
@@ -2442,6 +2501,29 @@ describe('EventView.getDisplayMode()', function() {
     });
     const displayMode = eventView.getDisplayMode();
     expect(displayMode).toEqual(DisplayModes.DAILY);
+  });
+
+  it('daily mode should fall back to default when disabled', function() {
+    const eventView = new EventView({
+      ...state,
+      // the period being less than 24h will disable the DAILY mode
+      statsPeriod: '1h',
+      display: DisplayModes.DAILY,
+    });
+    const displayMode = eventView.getDisplayMode();
+    expect(displayMode).toEqual(DisplayModes.DEFAULT);
+  });
+
+  it('top 5 daily mode should fall back to default when daily is disabled', function() {
+    const eventView = new EventView({
+      ...state,
+      // the period being less than 24h will disable the DAILY mode
+      start: '2020-04-01T12:13:14',
+      end: '2020-04-02T12:10:14',
+      display: DisplayModes.TOP5DAILY,
+    });
+    const displayMode = eventView.getDisplayMode();
+    expect(displayMode).toEqual(DisplayModes.DEFAULT);
   });
 });
 

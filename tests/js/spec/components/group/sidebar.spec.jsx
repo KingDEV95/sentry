@@ -76,7 +76,7 @@ describe('GroupSidebar', function() {
   describe('renders with tags', function() {
     it('renders', function() {
       expect(wrapper.find('SuggestedOwners')).toHaveLength(1);
-      expect(wrapper.find('GroupReleaseStats')).toHaveLength(1);
+      expect(wrapper.find('Memo(GroupReleaseStats)')).toHaveLength(1);
       expect(wrapper.find('ExternalIssueList')).toHaveLength(1);
       expect(
         wrapper.find('GroupTagDistributionMeter[data-test-id="group-tag"]')
@@ -117,30 +117,6 @@ describe('GroupSidebar', function() {
     it('renders empty text', function() {
       expect(wrapper.find('[data-test-id="no-tags"]').text()).toBe(
         'No tags found in the selected environments'
-      );
-    });
-  });
-
-  describe('subscribing', function() {
-    let issuesApi;
-    beforeEach(function() {
-      issuesApi = MockApiClient.addMockResponse({
-        url: '/projects/org-slug/project-slug/issues/',
-        method: 'PUT',
-        body: TestStubs.Group({isSubscribed: false}),
-      });
-    });
-
-    it('can subscribe', function() {
-      const btn = wrapper.find('SubscribeButton');
-
-      btn.simulate('click');
-
-      expect(issuesApi).toHaveBeenCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-          data: {isSubscribed: true},
-        })
       );
     });
   });

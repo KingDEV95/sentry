@@ -1,20 +1,129 @@
 from __future__ import absolute_import
 
 import logging
+import jwt
+import time
 
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.exceptions import AuthenticationFailed, NotAuthenticated
+
+from sentry import eventstore, options, analytics
+from sentry.api import client
 from sentry.api.base import Endpoint
+from sentry.models import (
+    ApiKey,
+    AuditLogEntryEvent,
+    Integration,
+    IdentityProvider,
+    Identity,
+    Group,
+    Project,
+    Rule,
+)
+from sentry.utils import json
+from sentry.utils.audit import create_audit_entry
 from sentry.utils.compat import filter
 from sentry.utils.signing import sign
 from sentry.web.decorators import transaction_start
 
-from .client import MsTeamsPreInstallClient, get_token_data
+from .card_builder import build_welcome_card, build_linking_card, build_group_card
+from .client import (
+    MsTeamsPreInstallClient,
+    MsTeamsJwtClient,
+    MsTeamsClient,
+    get_token_data,
+    CLOCK_SKEW,
+)
+from .link_identity import build_linking_url
+from .utils import ACTION_TYPE
+
 
 logger = logging.getLogger("sentry.integrations.msteams.webhooks")
 
 
-# TODO: implement
+class MsTeamsIntegrationAnalytics(analytics.Event):
+    attributes = (analytics.Attribute("actor_id"), analytics.Attribute("organization_id"))
+
+
+class MsTeamsIntegrationAssign(MsTeamsIntegrationAnalytics):
+    type = "integrations.msteams.assign"
+
+
+class MsTeamsIntegrationResolve(MsTeamsIntegrationAnalytics):
+    type = "integrations.msteams.resolve"
+
+
+class MsTeamsIntegrationIgnore(MsTeamsIntegrationAnalytics):
+    type = "integrations.msteams.ignore"
+
+
+class MsTeamsIntegrationUnresolve(MsTeamsIntegrationAnalytics):
+    type = "integrations.msteams.unresolve"
+
+
+class MsTeamsIntegrationUnassign(MsTeamsIntegrationAnalytics):
+    type = "integrations.msteams.unassign"
+
+
+analytics.register(MsTeamsIntegrationAssign)
+analytics.register(MsTeamsIntegrationResolve)
+analytics.register(MsTeamsIntegrationIgnore)
+analytics.register(MsTeamsIntegrationUnresolve)
+analytics.register(MsTeamsIntegrationUnassign)
+
+
 def verify_signature(request):
+    # docs for jwt authentication here: https://docs.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-connector-authentication?view=azure-bot-service-4.0#bot-to-connector
+    token = request.META.get("HTTP_AUTHORIZATION", "").replace("Bearer ", "")
+    if not token:
+        logger.error("msteams.webhook.no-auth-header")
+        raise NotAuthenticated("Authorization header required")
+
+    try:
+        jwt.decode(token, verify=False)
+    except jwt.DecodeError:
+        logger.error("msteams.webhook.invalid-token-no-verify")
+        raise AuthenticationFailed("Could not decode JWT token")
+
+    # get the open id config and jwks
+    client = MsTeamsJwtClient()
+    open_id_config = client.get_open_id_config()
+    jwks = client.get_cached(open_id_config["jwks_uri"])
+
+    # create a mapping of all the keys
+    # taken from: https://renzolucioni.com/verifying-jwts-with-jwks-and-pyjwt/
+    public_keys = {}
+    for jwk in jwks["keys"]:
+        kid = jwk["kid"]
+        public_keys[kid] = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+
+    kid = jwt.get_unverified_header(token)["kid"]
+    key = public_keys[kid]
+
+    try:
+        decoded = jwt.decode(
+            token,
+            key,
+            audience=options.get("msteams.client-id"),
+            algorithms=open_id_config["id_token_signing_alg_values_supported"],
+        )
+    except Exception as err:
+        logger.error("msteams.webhook.invalid-token-with-verify")
+        raise AuthenticationFailed("Could not validate JWT. Got %s" % err)
+
+    # now validate iss, service url, and expiration
+    if decoded.get("iss") != "https://api.botframework.com":
+        logger.error("msteams.webhook.invalid-iss")
+        raise AuthenticationFailed("The field iss does not match")
+
+    if decoded.get("serviceurl") != request.data.get("serviceUrl"):
+        logger.error("msteams.webhook.invalid-service_url")
+        raise AuthenticationFailed("The field serviceUrl does not match")
+
+    if int(time.time()) > decoded["exp"] + CLOCK_SKEW:
+        logger.error("msteams.webhook.expired-token")
+        raise AuthenticationFailed("Token is expired")
+
     return True
 
 
@@ -29,32 +138,253 @@ class MsTeamsWebhookEndpoint(Endpoint):
 
     @transaction_start("MsTeamsWebhookEndpoint")
     def post(self, request):
-        is_valid = verify_signature(request)
-
-        if not is_valid:
-            logger.error("msteams.webhook.invalid-signature")
-            return self.respond(status=401)
+        # verify_signature will raise the exception corresponding to the error
+        verify_signature(request)
 
         data = request.data
+        # only care about conversationUpdate and message
+        if data["type"] == "message":
+            # the only message events we care about are those which
+            # are from a user submitting an option on a card, which
+            # will always contain an "payload.actionType" in the data.
+            if not data.get("value", {}).get("payload", {}).get("actionType"):
+                return self.respond(status=204)
+            return self.handle_action_submitted(request)
+        elif data["type"] == "conversationUpdate":
+            channel_data = data["channelData"]
+            event = channel_data.get("eventType")
+
+            # TODO: Handle other events
+            if event == "teamMemberAdded":
+                return self.handle_member_added(request)
+            elif event == "teamMemberRemoved":
+                return self.handle_member_removed(request)
+
+        return self.respond(status=204)
+
+    def handle_member_added(self, request):
+        data = request.data
         channel_data = data["channelData"]
-        event = channel_data.get("eventType")
-        # TODO: Handle other events
-        if event == "teamMemberAdded":
-            # only care if our bot is the new member added
-            matches = filter(lambda x: x["id"] == data["recipient"]["id"], data["membersAdded"])
-            if matches:
-                team_id = channel_data["team"]["id"]
+        # only care if our bot is the new member added
+        matches = filter(lambda x: x["id"] == data["recipient"]["id"], data["membersAdded"])
+        if not matches:
+            return self.respond(status=204)
 
-                access_token = get_token_data()["access_token"]
+        team = channel_data["team"]
 
-                # need to keep track of the service url since we won't get it later
-                signed_data = {"team_id": team_id, "service_url": data["serviceUrl"]}
+        # TODO: add try/except for request exceptions
+        access_token = get_token_data()["access_token"]
 
-                # sign the params so this can't be forged
-                signed_params = sign(**signed_data)
+        # need to keep track of the service url since we won't get it later
+        signed_data = {
+            "team_id": team["id"],
+            "team_name": team["name"],
+            "service_url": data["serviceUrl"],
+        }
 
-                # send welcome message to the team
-                client = MsTeamsPreInstallClient(access_token, data["serviceUrl"])
-                client.send_welcome_message(team_id, signed_params)
+        # sign the params so this can't be forged
+        signed_params = sign(**signed_data)
 
-        return self.respond(status=200)
+        # send welcome message to the team
+        client = MsTeamsPreInstallClient(access_token, data["serviceUrl"])
+        card = build_welcome_card(signed_params)
+        client.send_card(team["id"], card)
+        return self.respond(status=201)
+
+    def handle_member_removed(self, request):
+        data = request.data
+        channel_data = data["channelData"]
+        # only care if our bot is the new member removed
+        matches = filter(lambda x: x["id"] == data["recipient"]["id"], data["membersRemoved"])
+        if not matches:
+            return self.respond(status=204)
+
+        team_id = channel_data["team"]["id"]
+
+        try:
+            integration = Integration.objects.get(provider=self.provider, external_id=team_id)
+        except Integration.DoesNotExist:
+            logger.info(
+                "msteams.uninstall.missing-integration", extra={"team_id": team_id},
+            )
+            return self.respond(status=404)
+
+        # no matter how many orgs are using the integration
+        # we have to delete the integration because the auth has been revoked
+        # an app can only be installed once for a team (unless it's deleted and re-installed)
+        # this is different than Vercel, for example, which can have multiple installations
+        # for the same team in Vercel with different auth tokens
+
+        for org in integration.organizations.all():
+            create_audit_entry(
+                request=request,
+                organization=org,
+                target_object=integration.id,
+                event=AuditLogEntryEvent.INTEGRATION_REMOVE,
+                actor_label="Teams User",
+                data={
+                    "provider": integration.provider,
+                    "name": integration.name,
+                    "team_id": team_id,
+                },
+            )
+
+        integration.delete()
+        return self.respond(status=204)
+
+    def make_action_data(self, data, user_id):
+        action_data = {}
+        action_type = data["payload"]["actionType"]
+        if action_type == ACTION_TYPE.UNRESOLVE:
+            action_data = {"status": "unresolved"}
+        elif action_type == ACTION_TYPE.RESOLVE:
+            status = data["resolveInput"]
+            # status might look something like "resolved:inCurrentRelease" or just "resolved"
+            status_data = status.split(":", 1)
+            resolve_type = status_data[-1]
+
+            action_data = {"status": "resolved"}
+            if resolve_type == "inNextRelease":
+                action_data.update({"statusDetails": {"inNextRelease": True}})
+            elif resolve_type == "inCurrentRelease":
+                action_data.update({"statusDetails": {"inRelease": "latest"}})
+        elif action_type == ACTION_TYPE.IGNORE:
+            action_data = {"status": "ignored"}
+            ignore_count = int(data["ignoreInput"])
+            if ignore_count > 0:
+                action_data.update({"statusDetails": {"ignoreCount": ignore_count}})
+        elif action_type == ACTION_TYPE.ASSIGN:
+            assignee = data["assignInput"]
+            if assignee == "ME":
+                assignee = u"user:{}".format(user_id)
+            action_data = {"assignedTo": assignee}
+        elif action_type == ACTION_TYPE.UNASSIGN:
+            action_data = {"assignedTo": ""}
+        return action_data
+
+    def issue_state_change(self, group, identity, data):
+        event_write_key = ApiKey(
+            organization=group.project.organization, scope_list=["event:write"]
+        )
+
+        # undoing the enum structure of ACTION_TYPE to
+        # get a more sensible analytics_event
+        action_types = {
+            ACTION_TYPE.RESOLVE: "resolve",
+            ACTION_TYPE.IGNORE: "ignore",
+            ACTION_TYPE.ASSIGN: "assign",
+            ACTION_TYPE.UNRESOLVE: "unresolve",
+            ACTION_TYPE.UNASSIGN: "unassign",
+        }
+        action_data = self.make_action_data(data, identity.user_id)
+        status = action_types[data["payload"]["actionType"]]
+        analytics_event = "integrations.msteams.%s" % status
+        analytics.record(
+            analytics_event,
+            actor_id=identity.user_id,
+            organization_id=group.project.organization.id,
+        )
+
+        return client.put(
+            path=u"/projects/{}/{}/issues/".format(
+                group.project.organization.slug, group.project.slug
+            ),
+            params={"id": group.id},
+            data=action_data,
+            user=identity.user,
+            auth=event_write_key,
+        )
+
+    def handle_action_submitted(self, request):
+        # pull out parameters
+        data = request.data
+        channel_data = data["channelData"]
+        tenant_id = channel_data["tenant"]["id"]
+        payload = data["value"]["payload"]
+        group_id = payload["groupId"]
+        integration_id = payload["integrationId"]
+        user_id = data["from"]["id"]
+        activity_id = data["replyToId"]
+        conversation = data["conversation"]
+        if conversation["conversationType"] == "personal":
+            conversation_id = conversation["id"]
+        else:
+            conversation_id = channel_data["channel"]["id"]
+
+        try:
+            integration = Integration.objects.get(id=integration_id)
+        except Integration.DoesNotExist:
+            logger.info(
+                "msteams.action.missing-integration", extra={"integration_id": integration_id}
+            )
+            return self.respond(status=404)
+
+        team_id = integration.external_id
+        client = MsTeamsClient(integration)
+
+        try:
+            group = Group.objects.select_related("project__organization").get(
+                project__in=Project.objects.filter(
+                    organization__in=integration.organizations.all()
+                ),
+                id=group_id,
+            )
+        except Group.DoesNotExist:
+            logger.info(
+                "msteams.action.invalid-issue",
+                extra={"team_id": team_id, "integration_id": integration.id},
+            )
+            return self.respond(status=404)
+
+        try:
+            idp = IdentityProvider.objects.get(type="msteams", external_id=team_id)
+        except IdentityProvider.DoesNotExist:
+            logger.info(
+                "msteams.action.invalid-team-id",
+                extra={
+                    "team_id": team_id,
+                    "integration_id": integration.id,
+                    "organization_id": group.organization.id,
+                },
+            )
+            return self.respond(status=404)
+
+        try:
+            identity = Identity.objects.get(idp=idp, external_id=user_id)
+        except Identity.DoesNotExist:
+            associate_url = build_linking_url(
+                integration, group.organization, user_id, team_id, tenant_id
+            )
+
+            card = build_linking_card(associate_url)
+            user_conversation_id = client.get_user_conversation_id(user_id, tenant_id)
+            client.send_card(user_conversation_id, card)
+            return self.respond(status=201)
+
+        # update the state of the issue
+        issue_change_response = self.issue_state_change(group, identity, data["value"])
+
+        # get the rules from the payload
+        rules = Rule.objects.filter(id__in=payload["rules"])
+
+        # pull the event based off our payload
+        event = eventstore.get_event_by_id(group.project_id, payload["eventId"])
+        if event is None:
+            logger.info(
+                "msteams.action.event-missing",
+                extra={
+                    "team_id": team_id,
+                    "integration_id": integration.id,
+                    "organization_id": group.organization.id,
+                    "event_id": payload["eventId"],
+                    "project_id": group.project_id,
+                },
+            )
+            return self.respond(status=404)
+
+        # refresh issue and update card
+        group.refresh_from_db()
+        card = build_group_card(group, event, rules, integration)
+        client.update_card(conversation_id, activity_id, card)
+
+        return issue_change_response

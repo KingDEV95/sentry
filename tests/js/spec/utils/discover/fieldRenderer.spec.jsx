@@ -4,15 +4,14 @@ import {initializeOrg} from 'sentry-test/initializeOrg';
 import {getFieldRenderer} from 'app/utils/discover/fieldRenderers';
 
 describe('getFieldRenderer', function() {
-  let location, context, project, organization, data, user, userAlias;
+  let location, context, project, organization, data, user;
   beforeEach(function() {
     context = initializeOrg({
       project: TestStubs.Project(),
     });
     organization = context.organization;
     project = context.project;
-    user = TestStubs.User();
-    userAlias = user.email || user.username || user.ip || user.id;
+    user = 'email:text@example.com';
 
     location = {
       pathname: '/events',
@@ -27,7 +26,8 @@ describe('getFieldRenderer', function() {
       url: '/example',
       latest_event: 'deadbeef',
       project: project.slug,
-      user: userAlias,
+      release: 'F2520C43515BD1F0E8A6BD46233324641A370BF6',
+      user,
     };
 
     MockApiClient.addMockResponse({
@@ -88,7 +88,7 @@ describe('getFieldRenderer', function() {
 
     const value = wrapper.find('StyledNameAndEmail');
     expect(value).toHaveLength(1);
-    expect(value.text()).toEqual(userAlias);
+    expect(value.text()).toEqual('text@example.com');
   });
 
   it('can render null user fields', function() {
@@ -99,6 +99,17 @@ describe('getFieldRenderer', function() {
 
     const badge = wrapper.find('UserBadge');
     expect(badge).toHaveLength(0);
+
+    const value = wrapper.find('EmptyValueContainer');
+    expect(value).toHaveLength(1);
+    expect(value.text()).toEqual('n/a');
+  });
+
+  it('can render null release fields', function() {
+    const renderer = getFieldRenderer('release', {release: 'string'});
+
+    delete data.release;
+    const wrapper = mount(renderer(data, {location, organization}));
 
     const value = wrapper.find('EmptyValueContainer');
     expect(value).toHaveLength(1);
