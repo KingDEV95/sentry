@@ -2275,18 +2275,37 @@
     htmlparser2 "^4.1.0"
     title-case "^3.0.2"
 
-"@sentry-internal/rrweb-player@1.106.0":
-  version "1.106.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/rrweb-player/-/rrweb-player-1.106.0.tgz#e57f86a55d513e9ef3e189109fdb3b727690165b"
-  integrity sha512-ung95stOJgvA9RBlIli5TuMZKtMcQoAkdfClR5mbkSiVK3D05tX2D/8wyUsudEsYfGS0QmBZJJ/b1UvFAJIurA==
+"@sentry-internal/rrdom@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/rrdom/-/rrdom-2.0.0.tgz#326b5f26c76d2077874db7edffd5be3aa72848fb"
+  integrity sha512-PLSw54GWCmxOmJWJ2NGDfz9b+/76IBpGsWnIjBiW7L3NDVuTo705/7+DmKTrDADO7xXAZZRpbuQjqBjV8Mu+yQ==
   dependencies:
-    "@sentry-internal/rrweb" "1.106.0"
-    "@tsconfig/svelte" "^3.0.0"
+    "@sentry-internal/rrweb-snapshot" "2.0.0"
+
+"@sentry-internal/rrweb-player@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/rrweb-player/-/rrweb-player-2.0.0.tgz#2d8e027de83e934656a09c3febdb600c1bdeeb5c"
+  integrity sha512-/GfV7uK6Qa1WYPSUXL5opHeVL6EkZFC7WoctPUQ3gB8AMk0KQThGAsMycX/Mssb4xmn0Zg7a9ZsNDH8GZfML8Q==
+  dependencies:
+    "@sentry-internal/rrweb" "2.0.0"
+    "@tsconfig/svelte" "^1.0.0"
 
 "@sentry-internal/rrweb-snapshot@1.106.0":
   version "1.106.0"
   resolved "https://registry.yarnpkg.com/@sentry-internal/rrweb-snapshot/-/rrweb-snapshot-1.106.0.tgz#24714d4005a918855eeb09d4deda457198f77caf"
   integrity sha512-jLX6uGAW8StwPlQOScLhERVa6VOPmbQRFdhTx70Flkt0ocxg2vBJSdaI4Efu3jU0mtA0gHR01LB5xd1ODMRXow==
+
+"@sentry-internal/rrweb-snapshot@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/rrweb-snapshot/-/rrweb-snapshot-2.0.0.tgz#6d034f4f65736e990e279842cf1c2868fc9f47dd"
+  integrity sha512-MFpUw2Kuq4OVQn1dv6l/oSPgbHdy8N0oWBeVeHQlBzxugje4i2KU9tf6K7KH2RAce7Bi9r5UgHvCsNG3PNi/XQ==
+
+"@sentry-internal/rrweb-types@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/rrweb-types/-/rrweb-types-2.0.0.tgz#8606e47d98e14580f46f98d5dc5d95bc9ebc8b59"
+  integrity sha512-3dgoh4sbqgY8XwsKh6ofA8WRtUE+qWLHPDMzipp1XefKfEhr6qTtw0riurnJBrO5lD6dJuewK5BWwjcrFb3Gag==
+  dependencies:
+    "@sentry-internal/rrweb-snapshot" "2.0.0"
 
 "@sentry-internal/rrweb@1.106.0":
   version "1.106.0"
@@ -2299,6 +2318,20 @@
     base64-arraybuffer "^1.0.1"
     fflate "^0.4.4"
     mitt "^1.1.3"
+
+"@sentry-internal/rrweb@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/rrweb/-/rrweb-2.0.0.tgz#180e2763b77f83aa24bae964dd2f8c8065ddfc49"
+  integrity sha512-SOyIGjCi1q9ocMOHAAU6DhO2vecRkLk9/zQ6YbIJsUz1vB1ZoF0L1xDlwuL+fGw3HjZ6Wn8RoZWSSiQRokL7lg==
+  dependencies:
+    "@sentry-internal/rrdom" "2.0.0"
+    "@sentry-internal/rrweb-snapshot" "2.0.0"
+    "@sentry-internal/rrweb-types" "2.0.0"
+    "@types/css-font-loading-module" "0.0.7"
+    "@xstate/fsm" "^1.4.0"
+    base64-arraybuffer "^1.0.1"
+    fflate "^0.4.4"
+    mitt "^3.0.0"
 
 "@sentry-internal/tracing@7.44.2":
   version "7.44.2"
@@ -2617,10 +2650,10 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.2.tgz#423c77877d0569db20e1fc80885ac4118314010e"
   integrity sha512-eZxlbI8GZscaGS7kkc/trHTT5xgrjH3/1n2JDwusC9iahPKWMRvRjJSAN5mCXviuTGQ/lHnhvv8Q1YTpnfz9gA==
 
-"@tsconfig/svelte@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@tsconfig/svelte/-/svelte-3.0.0.tgz#b06e059209f04c414de0069f2f0e2796d979fc6f"
-  integrity sha512-pYrtLtOwku/7r1i9AMONsJMVYAtk3hzOfiGNekhtq5tYBGA7unMve8RvUclKLMT3PrihvJqUmzsRGh0RP84hKg==
+"@tsconfig/svelte@^1.0.0":
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/@tsconfig/svelte/-/svelte-1.0.13.tgz#2fa34376627192c0d643ce54964915e2bd3a58e4"
+  integrity sha512-5lYJP45Xllo4yE/RUBccBT32eBlRDbqN8r1/MIvQbKxW3aFqaYPCNgm8D5V20X4ShHcwvYWNlKg3liDh1MlBoA==
 
 "@types/aria-query@^4.2.0":
   version "4.2.1"
@@ -8111,6 +8144,11 @@ mitt@^1.1.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mitt/-/mitt-1.2.0.tgz#cb24e6569c806e31bd4e3995787fe38a04fdf90d"
   integrity sha512-r6lj77KlwqLhIUku9UWYes7KJtsczvolZkzp8hbaDPPaE24OmWl5s539Mytlj22siEQKosZ26qCBgda2PKwoJw==
+
+mitt@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/mitt/-/mitt-3.0.1.tgz#ea36cf0cc30403601ae074c8f77b7092cdab36d1"
+  integrity sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==
 
 mkdirp@^0.5.1:
   version "0.5.5"
