@@ -10555,10 +10555,10 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tocbot@^4.20.0:
-  version "4.20.0"
-  resolved "https://registry.yarnpkg.com/tocbot/-/tocbot-4.20.0.tgz#862137da17ffdf7a61b614d4bc7f3c8fb349a057"
-  integrity sha512-iSPKsVZ9W0zGI3XkEadFEJNSxQf/jjzWDQROnQitAKe7DX48lNk6CwLXKTol1qG8I5Hm6wM+tpzcDrkcyt3sXA==
+tocbot@^4.21.2:
+  version "4.21.2"
+  resolved "https://registry.yarnpkg.com/tocbot/-/tocbot-4.21.2.tgz#7ae513d73dddb80f126724160bd6f72bf8638edb"
+  integrity sha512-R5Muhi/TUu4i4snWVrMgNoXyJm2f8sJfdgIkQvqb+cuIXQEIMAiWGWgCgYXHqX4+XiS/Bnm7IYZ9Zy6NVe6lhw==
 
 toidentifier@1.0.1:
   version "1.0.1"
