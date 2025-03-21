@@ -1162,7 +1162,7 @@
     "@babel/plugin-transform-modules-commonjs" "^7.25.9"
     "@babel/plugin-transform-typescript" "^7.25.9"
 
-"@babel/runtime@*", "@babel/runtime@7.4.5", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.13", "@babel/runtime@^7.3.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@~7.26.10":
+"@babel/runtime@*", "@babel/runtime@7.4.5", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.13", "@babel/runtime@^7.3.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@~7.26.10":
   version "7.26.10"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.26.10.tgz#a07b4d8fa27af131a633d7b3524db803eb4764c2"
   integrity sha512-2WJMeRQPHKSPemqk/awGrAiuFfzBmOIPXKizAsVhWH9YJqLZ0H+HS4c8loHGgW6utJ3E/ejXQUsiGaQy2NZ9Fw==
@@ -3933,10 +3933,12 @@
   resolved "https://registry.yarnpkg.com/@types/gtag.js/-/gtag.js-0.0.12.tgz#095122edca896689bdfcdd73b057e23064d23572"
   integrity sha512-YQV9bUsemkzG81Ea295/nF/5GijnD2Af7QhEofh7xu+kvCN6RdodgNwwGWXB5GMI3NoyvQo0odNctoH/qLMIpg==
 
-"@types/history@^3.2.5":
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/@types/history/-/history-3.2.5.tgz#be614208f1a10a20c414b4d3762d1f2b65b53ae4"
-  integrity sha512-TqWYI0mlqS5qhH8MHgJJs0RcgvvZLxkn0bi2qK07liZqP7M9rl1kpJ6TCAUo5Cp4vP5DObIqHcky0MWyyQojVQ==
+"@types/history@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/history/-/history-5.0.0.tgz#29f919f0c8e302763798118f45b19cab4a886f14"
+  integrity sha512-hy8b7Y1J8OGe6LbAjj3xniQrj3v6lsivCcrmf4TzSgPzLkhIeKgc5IZnT7ReIqmEuodjfO8EYAuoFvIrHi/+jQ==
+  dependencies:
+    history "*"
 
 "@types/html-minifier-terser@^6.0.0":
   version "6.1.0"
@@ -7567,6 +7569,13 @@ he@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
+
+history@*:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/history/-/history-5.3.0.tgz#1548abaa245ba47992f063a0783db91ef201c73b"
+  integrity sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==
+  dependencies:
+    "@babel/runtime" "^7.7.6"
 
 hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
