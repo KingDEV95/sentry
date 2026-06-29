@@ -344,8 +344,8 @@ importers:
         specifier: 3.45.0
         version: 3.45.0
       cronstrue:
-        specifier: ^2.50.0
-        version: 2.50.0
+        specifier: ^3.23.0
+        version: 3.23.0
       css-loader:
         specifier: ^7.1.2
         version: 7.1.2(@rspack/core@2.0.4)(webpack@5.99.6(@swc/core@1.15.33)(esbuild@0.25.10)(postcss@8.5.3))
@@ -4910,8 +4910,8 @@ packages:
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
 
-  cronstrue@2.50.0:
-    resolution: {integrity: sha512-ULYhWIonJzlScCCQrPUG5uMXzXxSixty4djud9SS37DoNxDdkeRocxzHuAo4ImRBUK+mAuU5X9TSwEDccnnuPg==}
+  cronstrue@3.23.0:
+    resolution: {integrity: sha512-sIBZcwhpwkarRxfAHctpqGU9RapM7aLg5IktORluDnnUNkaTIIxEfI6S5IQy1isBGyTmgbbz4X6xPqpUgK7l0A==}
     hasBin: true
 
   cross-fetch@3.1.8:
@@ -5271,8 +5271,8 @@ packages:
     resolution: {integrity: sha512-ZCkIjSYNDyGn0R6ewHDtXgns/Zre/NT6Agvq1/WobF7JXgFff4SeDroKiCO3fNJreU9YG429Sc81o4w5ok/W5g==}
     engines: {node: '>=10.2.0'}
 
-  enhanced-resolve@5.24.0:
-    resolution: {integrity: sha512-SkE2t82KlkkxQRVMVLAGKxLfORGQfrkx5dkj+vlgXRVNEdPc4eZcR+J/Fvj8C+yKSFH5L0q3NFlyufOVQnCcYQ==}
+  enhanced-resolve@5.24.1:
+    resolution: {integrity: sha512-7DdUaTjmNwMcH2gLr1qycesKII3BK4RLy/mdAb7x10Lq7bR4aNKHt1BR1ZALSv0rPM/hF5wYF0PhGop/rJm8vw==}
     engines: {node: '>=10.13.0'}
 
   entities@2.0.0:
@@ -13796,7 +13796,7 @@ snapshots:
   create-require@1.1.1:
     optional: true
 
-  cronstrue@2.50.0: {}
+  cronstrue@3.23.0: {}
 
   cross-fetch@3.1.8(encoding@0.1.13):
     dependencies:
@@ -14148,7 +14148,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  enhanced-resolve@5.24.0:
+  enhanced-resolve@5.24.1:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
@@ -18968,7 +18968,7 @@ snapshots:
       acorn: 8.17.0
       browserslist: 4.28.1
       chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.24.0
+      enhanced-resolve: 5.24.1
       es-module-lexer: 1.7.0
       eslint-scope: 5.1.1
       events: 3.3.0
