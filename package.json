@@ -167,7 +167,7 @@
     "echarts-for-react": "3.0.6",
     "esbuild": "0.28.1",
     "focus-trap": "8.2.2",
-    "framer-motion": "12.38.0",
+    "framer-motion": "13.0.0",
     "fuse.js": "^7.5.0",
     "gettext-parser": "9.1.1",
     "gl-matrix": "3.4.4",
