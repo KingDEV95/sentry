@@ -632,8 +632,8 @@ importers:
         specifier: 7.1.1
         version: 7.1.1(eslint@10.8.0(jiti@2.7.0))
       eslint-plugin-react-you-might-not-need-an-effect:
-        specifier: 0.5.3
-        version: 0.5.3(eslint@10.8.0(jiti@2.7.0))
+        specifier: 1.0.2
+        version: 1.0.2(eslint@10.8.0(jiti@2.7.0))
       eslint-plugin-regexp:
         specifier: 3.1.1
         version: 3.1.1(eslint@10.8.0(jiti@2.7.0))
@@ -1691,6 +1691,9 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
+
+  '@jridgewell/sourcemap-codec@1.6.0':
+    resolution: {integrity: sha512-T7jf+5zgsZHwNJ4lvQ7/aezbyk0nNX+zJVWpmHA7VYsEx7a7qr5Rg5IbtJFqkgze5Y2sruq1RUY8Q837Od7iFw==}
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
@@ -5452,8 +5455,8 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0 || ^10.0.0
 
-  eslint-plugin-react-you-might-not-need-an-effect@0.5.3:
-    resolution: {integrity: sha512-/tkUN71PIp5+LVSDb9y3MA4zMyjVGJojfWCeC2NSWhRRBbc0NRR8WnFXe2h3bw6tTcYMack/dlHME5YVu/0Fmw==}
+  eslint-plugin-react-you-might-not-need-an-effect@1.0.2:
+    resolution: {integrity: sha512-HgYol2zhH3KbnW9Q4FY/FcIINbsYVL6rwQESChqBC2s9SLWtw1wg05+J7SCrr3BfQpNY2ReYhf8xjpd2JhKJOQ==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       eslint: '>=8.40.0'
@@ -5497,16 +5500,6 @@ packages:
   eslint-scope@9.1.2:
     resolution: {integrity: sha512-xS90H51cKw0jltxmvmHy2Iai1LIqrfbw57b79w/J7MfvDfkIkFZ+kj6zC3BjtUwh150HsSSdxXZcsuv72miDFQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
-
-  eslint-utils@3.0.0:
-    resolution: {integrity: sha512-uuQC43IGctw68pJA1RgbQS8/NP7rch6Cwd4j3ZBtgo4/8Flj4eGE7ZYSZRN3iq5pVUv6GPdW5Z1RFleo84uLDA==}
-    engines: {node: ^10.0.0 || ^12.0.0 || >= 14.0.0}
-    peerDependencies:
-      eslint: '>=5'
-
-  eslint-visitor-keys@2.1.0:
-    resolution: {integrity: sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==}
-    engines: {node: '>=10'}
 
   eslint-visitor-keys@3.4.3:
     resolution: {integrity: sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==}
@@ -10187,6 +10180,9 @@ snapshots:
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
+  '@jridgewell/sourcemap-codec@1.6.0':
+    optional: true
+
   '@jridgewell/trace-mapping@0.3.31':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
@@ -10195,7 +10191,7 @@ snapshots:
   '@jridgewell/trace-mapping@0.3.9':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.5
+      '@jridgewell/sourcemap-codec': 1.6.0
     optional: true
 
   '@jsdevtools/ono@7.1.3': {}
@@ -14076,10 +14072,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-you-might-not-need-an-effect@0.5.3(eslint@10.8.0(jiti@2.7.0)):
+  eslint-plugin-react-you-might-not-need-an-effect@1.0.2(eslint@10.8.0(jiti@2.7.0)):
     dependencies:
       eslint: 10.8.0(jiti@2.7.0)
-      eslint-utils: 3.0.0(eslint@10.8.0(jiti@2.7.0))
       globals: 16.3.0
 
   eslint-plugin-react@7.37.5(eslint@10.8.0(jiti@2.7.0)):
@@ -14166,13 +14161,6 @@ snapshots:
       '@types/estree': 1.0.9
       esrecurse: 4.3.0
       estraverse: 5.3.0
-
-  eslint-utils@3.0.0(eslint@10.8.0(jiti@2.7.0)):
-    dependencies:
-      eslint: 10.8.0(jiti@2.7.0)
-      eslint-visitor-keys: 2.1.0
-
-  eslint-visitor-keys@2.1.0: {}
 
   eslint-visitor-keys@3.4.3: {}
 
