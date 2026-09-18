@@ -186,8 +186,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@sentry-internal/rrweb':
-        specifier: 2.41.0
-        version: 2.41.0
+        specifier: 2.43.0
+        version: 2.43.0
       '@sentry-internal/rrweb-player':
         specifier: 2.41.0
         version: 2.41.0
@@ -3292,6 +3292,9 @@ packages:
   '@sentry-internal/rrdom@2.41.0':
     resolution: {integrity: sha512-oFBTYW/YH98Hp43AsgXXx0FUY2GmwFVYeEdwKqCxui6yV3cLH9ut2aguFLbel7VmCsgsvEuzvDx6z04mbWJgNA==}
 
+  '@sentry-internal/rrdom@2.43.0':
+    resolution: {integrity: sha512-dJqvPTWWWQRqFE+4m2YpS8l5aLkbiz+PrbHh53p0jyanbqodti4LvFy7UmbsNqxZDOCz24fGFhlbCc8OvdiubQ==}
+
   '@sentry-internal/rrweb-packer@2.41.0':
     resolution: {integrity: sha512-1X4ckBAjtFBZlQ8AlT4sUsuTi8yfrQfq4GJ03lbpdawgiH8NGr6ZBR2pl0ZTHo7bUGDGPA5VSYUuztEEzfNuuA==}
 
@@ -3312,6 +3315,9 @@ packages:
 
   '@sentry-internal/rrweb@2.41.0':
     resolution: {integrity: sha512-Pq5Ng/NhXza40lIXAjBCclvuC+QFwAktWwl2Sa/oMH//GxtDc/mcWV7CIHdsiSbTkd3jFQZcuutByFq2hlCSug==}
+
+  '@sentry-internal/rrweb@2.43.0':
+    resolution: {integrity: sha512-kMOzXrnKXTfOw17GwcI8vs+AnIsJpKvjyU7EDA+dzQ4jJ6NXVaf4bT+ybIIoklBYE+ck08wDnf5ND+lAvX6YNg==}
 
   '@sentry/babel-plugin-component-annotate@5.3.0':
     resolution: {integrity: sha512-p4q8gn8wcFqZGP/s2MnJCAAd8fTikaU6A0mM97RDHQgStcrYiaS0Sc5zUNfb1V+UOLPuvdEdL6MwyxfzjYJQTA==}
@@ -5960,8 +5966,8 @@ packages:
       picomatch:
         optional: true
 
-  fflate@0.4.8:
-    resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
+  fflate@0.4.9:
+    resolution: {integrity: sha512-zdxgIEddhfsyCaWpJ2SdXEP8ZMrKJ6+5jl4OupODcywU0IhRk6gdXuVGcPICyfx2H97hVK7xmJtRLPjkxAX8Vw==}
 
   file-entry-cache@11.1.5:
     resolution: {integrity: sha512-+PFTHITI08JIGhnNpGNI8T8inUpgZfk3GNEqfT9R2zZV2iFXg3CvqzSl/uEhs7TSGujYRELEANyDvS8Fj7+S7Q==}
@@ -11864,10 +11870,14 @@ snapshots:
     dependencies:
       '@sentry-internal/rrweb-snapshot': 2.41.0
 
+  '@sentry-internal/rrdom@2.43.0':
+    dependencies:
+      '@sentry-internal/rrweb-snapshot': 2.43.0
+
   '@sentry-internal/rrweb-packer@2.41.0':
     dependencies:
       '@sentry-internal/rrweb-types': 2.41.0
-      fflate: 0.4.8
+      fflate: 0.4.9
 
   '@sentry-internal/rrweb-player@2.41.0':
     dependencies:
@@ -11897,7 +11907,18 @@ snapshots:
       '@types/css-font-loading-module': 0.0.7
       '@xstate/fsm': 1.6.5
       base64-arraybuffer: 1.0.2
-      fflate: 0.4.8
+      fflate: 0.4.9
+      mitt: 3.0.1
+
+  '@sentry-internal/rrweb@2.43.0':
+    dependencies:
+      '@sentry-internal/rrdom': 2.43.0
+      '@sentry-internal/rrweb-snapshot': 2.43.0
+      '@sentry-internal/rrweb-types': 2.43.0
+      '@types/css-font-loading-module': 0.0.7
+      '@xstate/fsm': 1.6.5
+      base64-arraybuffer: 1.0.2
+      fflate: 0.4.9
       mitt: 3.0.1
 
   '@sentry/babel-plugin-component-annotate@5.3.0': {}
@@ -14720,7 +14741,7 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.7
 
-  fflate@0.4.8: {}
+  fflate@0.4.9: {}
 
   file-entry-cache@11.1.5:
     dependencies:
