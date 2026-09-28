@@ -27,8 +27,8 @@ importers:
   .:
     dependencies:
       '@amplitude/analytics-browser':
-        specifier: ^1.5.3
-        version: 1.13.7
+        specifier: ^2.47.0
+        version: 2.47.0
       '@dnd-kit/core':
         specifier: ^6.1.0
         version: 6.1.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -802,32 +802,41 @@ packages:
   '@algolia/transporter@4.13.1':
     resolution: {integrity: sha512-pICnNQN7TtrcYJqqPEXByV8rJ8ZRU2hCiIKLTLRyNpghtQG3VAFk6fVtdzlNfdUGZcehSKGarPIZEHlQXnKjgw==}
 
-  '@amplitude/analytics-browser@1.13.7':
-    resolution: {integrity: sha512-5hDhOotLDAZJYkoJ1Tjgaq5eFKSGaq5rLJGCCRpH/Cy6FNMS1bZAXOJcAAkFYkvHJzyruw877hspRLv+oR6J7Q==}
+  '@amplitude/analytics-browser@2.47.0':
+    resolution: {integrity: sha512-ygr1GKpyiBZ1IXZb0kDKgqULl/h18DUK//SrX7j1cUnT1YQEQAzqSnM0QVByy3G+KWWEHHH2iQWSgQskNbp9Zg==}
 
-  '@amplitude/analytics-client-common@1.2.3':
-    resolution: {integrity: sha512-J/RlOmzvrhhLkk5HhpYlV83SGnli+IRWzHaWPV5Dhg1yieaMZlGPkyoS26gyMMPBIv9fcoG6b4LptO9pbMbjSg==}
+  '@amplitude/analytics-connector@1.6.8':
+    resolution: {integrity: sha512-ryZUsakytEZZ+g/O5mTsObckhCKtZrNdZw+KKcbuzVCZa1LJFPWHvKj+jwQpPO0ngsbb6oEpC5laaIEM5B4XKQ==}
 
-  '@amplitude/analytics-connector@1.6.2':
-    resolution: {integrity: sha512-9bk2IjyV3VgUdbI3ounKUuP+4u4ABftDWGdOKxshEQrHg6WhgC8V4hdhSHv9wOHebGTvZntRKM5LlSXUyDYBpw==}
+  '@amplitude/analytics-core@2.55.0':
+    resolution: {integrity: sha512-fzjXEWX2o5I58Tl5jYaw2G5Tp5ejfcDkayWMogEThCl/fd6AqRKkrl/dVVqGV3h/GS3HZws7J4baIWkaq92jkQ==}
 
-  '@amplitude/analytics-core@1.2.5':
-    resolution: {integrity: sha512-V7CVlHVN+1diKiOpdp2bCPZ0mbS4CmUYF+v+eXDwVfJL3M/t3sVcT1apXnmVYGYi14cGu9hQOD11rD6qKbUOsw==}
+  '@amplitude/analytics-core@2.58.0':
+    resolution: {integrity: sha512-ZFd271l2UZrR0gXXcgRqV1fj6nURIemovV7EDTdO8z+9rVobV7P+mjs4srqLwEJl3YfNX/ma1IgfFFriFEmXSQ==}
 
-  '@amplitude/analytics-types@1.3.4':
-    resolution: {integrity: sha512-tR70gzqFkEzX9QpxvWYMfLCledT7vMhgd3d4/bkp3nnGXTOORaVUOCcSgOyxyuFdSx84T61aP/eZPKIcZcaP+A==}
+  '@amplitude/element-selector@0.3.0':
+    resolution: {integrity: sha512-rfjXGjXqQiitxse3ZcoPLny2Uy8AXYnWAqB6oqZj39zYVuieoxhfWT50HZks3F4Ny4Zyf45tJqyLCnfvGGMs4A==}
 
-  '@amplitude/experiment-core@0.10.1':
-    resolution: {integrity: sha512-2h0vqOaHoACmNiliGT78hnu9K/tmb7pWU1xw1KitlTtxK6wQqsY/IZPLMwBMG5MLp/AOzNEA/uelODfhBC5+SQ==}
+  '@amplitude/plugin-autocapture-browser@1.29.3':
+    resolution: {integrity: sha512-7YqCRGu7QrtlzzDSQFZ4CG1kNkOvO6SCE3UKL240YHzS2mM95Cb6li4So4/Orek7A5ffDlq375OJrDNujg4rtw==}
 
-  '@amplitude/plugin-page-view-tracking-browser@1.0.13':
-    resolution: {integrity: sha512-IkQog/DnKGX8kgK2VQLLdRqpG/33uVF0JOXw+NR3Jog/9DBSWYckJhyjXhX8wZGmsaYSwas+Lo6tbaUdoNnmww==}
+  '@amplitude/plugin-custom-enrichment-browser@0.1.22':
+    resolution: {integrity: sha512-KDTVCOmivrLzp1Q9EJuU61Yzw0Mip9DU/VnMnfROD37rCv0QX78O7RuYVzN+R6sprgUw+tkmS512PmkbVLOFsA==}
 
-  '@amplitude/plugin-web-attribution-browser@1.0.13':
-    resolution: {integrity: sha512-1f/EgkO64+8QyhnfkyJad6q4Hq62Orz6P4UFXnOGl3fj8WEw6Y3YhuUqWX6oqAKzSIYmZ0gueS+82jPBM1Qczg==}
+  '@amplitude/plugin-event-property-attribution-browser@0.2.17':
+    resolution: {integrity: sha512-7E34OIVtWGkn9uu0+ymrGwi+0ZFYG21KBb3c6Vrgu4HiDCxdCC/7l16NczoNn3FIyd8ljsiBlTCVQRmOEMg9yQ==}
 
-  '@amplitude/ua-parser-js@0.7.33':
-    resolution: {integrity: sha512-wKEtVR4vXuPT9cVEIJkYWnlF++Gx3BdLatPBM+SZ1ztVIvnhdGBZR/mn9x/PzyrMcRlZmyi6L56I2J3doVBnjA==}
+  '@amplitude/plugin-network-capture-browser@1.10.17':
+    resolution: {integrity: sha512-ZN/euGASoVuYw7z8fAETHlHQ/3wP5sqAVBc2MeOzuFsQpaKLxjoCCKGMq1HD6tZEV+mQ+cLUa6mzbEOZ5UylgQ==}
+
+  '@amplitude/plugin-page-url-enrichment-browser@0.7.27':
+    resolution: {integrity: sha512-nAFX4YPjKp30IKWbCR8irrWPfepUyJQiBAStASYWlbDgUUhwQM6rnnCMLGDFo77MZK8klSVjUS16nK9JMg/Fyg==}
+
+  '@amplitude/plugin-page-view-tracking-browser@2.11.17':
+    resolution: {integrity: sha512-XtqMgTqs9Ojz85fMLOZrSJ6fxaxE28aTPNDq1uC4N7wdMsyp1gkEJI4Uugg+G3BH8Sl85zmjFF92XX1+fMiwCg==}
+
+  '@amplitude/plugin-web-vitals-browser@1.2.0':
+    resolution: {integrity: sha512-J8eQf8lAqETpA4JeYwZ3sWufl/p8+prolPa2FDgsWRfmehdkgdCdBmCm6TVtOPUh0mury5cnXe2WYBAbXPWngg==}
 
   '@apidevtools/json-schema-ref-parser@9.0.9':
     resolution: {integrity: sha512-GBD2Le9w2+lVFoc4vswGI/TjkNIZSVp7+9xPf+X3uidBfWnAeUWmquteSyt0+VCrhNMWj/FTABISQrD3Z/YA+w==}
@@ -4232,6 +4241,9 @@ packages:
 
   '@types/yargs@17.0.35':
     resolution: {integrity: sha512-qUHkeCyQFxMXg79wQfTtfndEC+N9ZZg76HJftDJp+qH2tV7Gj4OJi7l+PiWwJ+pWtW8GwSmqsDj/oymhrTWXjg==}
+
+  '@types/zen-observable@0.8.3':
+    resolution: {integrity: sha512-fbF6oTd4sGGy0xjHPKAt+eS2CrxJ3+6gQ3FGcBoIJR2TLAyCkCyI8JqZNy+FeON0AhVgNJoUumVoZQjBFUqHkw==}
 
   '@typescript-eslint/project-service@8.58.0':
     resolution: {integrity: sha512-8Q/wBPWLQP1j16NxoPNIKpDZFMaxl7yWIoqXWYeWO+Bbd2mjgvoF0dxP2jKZg5+x49rgKdf7Ck473M8PC3V9lg==}
@@ -8354,6 +8366,9 @@ packages:
   safe-buffer@5.2.1:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
 
+  safe-json-stringify@1.2.0:
+    resolution: {integrity: sha512-gH8eh2nZudPQO6TytOvbxnuhYBOvDBBLW52tz5q6X58lJcd/tkmqFR+5Z9adS8aJtURSXWThWy/xJtJwixErvg==}
+
   safe-push-apply@1.0.0:
     resolution: {integrity: sha512-iKE9w/Z7xCzUMIZqdBsp6pEQvwuEebH4vdpjcDWnyzaI6yl6O9FHvVpmGelvEHNsoY6wGblkxR6Zty/h00WiSA==}
     engines: {node: '>= 0.4'}
@@ -9127,6 +9142,9 @@ packages:
   wcwidth@1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
 
+  web-vitals@6.2.1:
+    resolution: {integrity: sha512-rLcLXA2sx6+9dE88NHFubwTtGxpK4yYBLj6qHPdFoCaLr0cXGb4efOqtKLlm4loGA4OEKHIQKMKzZkKyOh5ctw==}
+
   web-vitals@6.2.2:
     resolution: {integrity: sha512-oto5x6dLEgrRqfcWed+pZEUb2q6ikbFmqF54CRDhI/QGbn+qxC49b4C4OkbH+kb9C3a8shpFD3SgR9kRcs80ZQ==}
 
@@ -9282,6 +9300,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zen-observable@0.10.0:
+    resolution: {integrity: sha512-iI3lT0iojZhKwT5DaFy2Ce42n3yFcLdFyOh01G7H0flMY60P8MJuVFEoJoNwXlmAyQ45GrjL6AcZmmlv8A5rbw==}
+
   zod-validation-error@3.5.4:
     resolution: {integrity: sha512-+hEiRIiPobgyuFlEojnqjJnhFvg4r/i3cqgcm67eehZf/WBaK3g6cD02YU9mtdVxZjv8CzCA9n/Rhrs3yAAvAw==}
     engines: {node: '>=18.0.0'}
@@ -9372,52 +9393,76 @@ snapshots:
       '@algolia/logger-common': 4.13.1
       '@algolia/requester-common': 4.13.1
 
-  '@amplitude/analytics-browser@1.13.7':
+  '@amplitude/analytics-browser@2.47.0':
     dependencies:
-      '@amplitude/analytics-client-common': 1.2.3
-      '@amplitude/analytics-core': 1.2.5
-      '@amplitude/analytics-types': 1.3.4
-      '@amplitude/plugin-page-view-tracking-browser': 1.0.13
-      '@amplitude/plugin-web-attribution-browser': 1.0.13
-      '@amplitude/ua-parser-js': 0.7.33
+      '@amplitude/analytics-core': 2.58.0
+      '@amplitude/plugin-autocapture-browser': 1.29.3
+      '@amplitude/plugin-custom-enrichment-browser': 0.1.22
+      '@amplitude/plugin-event-property-attribution-browser': 0.2.17
+      '@amplitude/plugin-network-capture-browser': 1.10.17
+      '@amplitude/plugin-page-url-enrichment-browser': 0.7.27
+      '@amplitude/plugin-page-view-tracking-browser': 2.11.17
+      '@amplitude/plugin-web-vitals-browser': 1.2.0
       tslib: 2.8.1
 
-  '@amplitude/analytics-client-common@1.2.3':
+  '@amplitude/analytics-connector@1.6.8': {}
+
+  '@amplitude/analytics-core@2.55.0':
     dependencies:
-      '@amplitude/analytics-connector': 1.6.2
-      '@amplitude/analytics-core': 1.2.5
-      '@amplitude/analytics-types': 1.3.4
+      '@amplitude/analytics-connector': 1.6.8
+      '@types/zen-observable': 0.8.3
+      safe-json-stringify: 1.2.0
+      tslib: 2.8.1
+      zen-observable: 0.10.0
+
+  '@amplitude/analytics-core@2.58.0':
+    dependencies:
+      '@amplitude/analytics-connector': 1.6.8
+      '@types/zen-observable': 0.8.3
+      safe-json-stringify: 1.2.0
+      tslib: 2.8.1
+      zen-observable: 0.10.0
+
+  '@amplitude/element-selector@0.3.0':
+    dependencies:
       tslib: 2.8.1
 
-  '@amplitude/analytics-connector@1.6.2':
+  '@amplitude/plugin-autocapture-browser@1.29.3':
     dependencies:
-      '@amplitude/experiment-core': 0.10.1
-
-  '@amplitude/analytics-core@1.2.5':
-    dependencies:
-      '@amplitude/analytics-types': 1.3.4
+      '@amplitude/analytics-core': 2.58.0
+      '@amplitude/element-selector': 0.3.0
       tslib: 2.8.1
 
-  '@amplitude/analytics-types@1.3.4': {}
-
-  '@amplitude/experiment-core@0.10.1':
+  '@amplitude/plugin-custom-enrichment-browser@0.1.22':
     dependencies:
-      js-base64: 3.8.0
-
-  '@amplitude/plugin-page-view-tracking-browser@1.0.13':
-    dependencies:
-      '@amplitude/analytics-client-common': 1.2.3
-      '@amplitude/analytics-types': 1.3.4
+      '@amplitude/analytics-core': 2.55.0
       tslib: 2.8.1
 
-  '@amplitude/plugin-web-attribution-browser@1.0.13':
+  '@amplitude/plugin-event-property-attribution-browser@0.2.17':
     dependencies:
-      '@amplitude/analytics-client-common': 1.2.3
-      '@amplitude/analytics-core': 1.2.5
-      '@amplitude/analytics-types': 1.3.4
+      '@amplitude/analytics-core': 2.58.0
       tslib: 2.8.1
 
-  '@amplitude/ua-parser-js@0.7.33': {}
+  '@amplitude/plugin-network-capture-browser@1.10.17':
+    dependencies:
+      '@amplitude/analytics-core': 2.58.0
+      tslib: 2.8.1
+
+  '@amplitude/plugin-page-url-enrichment-browser@0.7.27':
+    dependencies:
+      '@amplitude/analytics-core': 2.58.0
+      tslib: 2.8.1
+
+  '@amplitude/plugin-page-view-tracking-browser@2.11.17':
+    dependencies:
+      '@amplitude/analytics-core': 2.58.0
+      tslib: 2.8.1
+
+  '@amplitude/plugin-web-vitals-browser@1.2.0':
+    dependencies:
+      '@amplitude/analytics-core': 2.58.0
+      tslib: 2.8.1
+      web-vitals: 6.2.1
 
   '@apidevtools/json-schema-ref-parser@9.0.9':
     dependencies:
@@ -12757,6 +12802,8 @@ snapshots:
   '@types/yargs@17.0.35':
     dependencies:
       '@types/yargs-parser': 21.0.3
+
+  '@types/zen-observable@0.8.3': {}
 
   '@typescript-eslint/project-service@8.58.0(@typescript/typescript6@6.0.2)':
     dependencies:
@@ -17845,6 +17892,8 @@ snapshots:
 
   safe-buffer@5.2.1: {}
 
+  safe-json-stringify@1.2.0: {}
+
   safe-push-apply@1.0.0:
     dependencies:
       es-errors: 1.3.0
@@ -18792,6 +18841,8 @@ snapshots:
     dependencies:
       defaults: 1.0.4
 
+  web-vitals@6.2.1: {}
+
   web-vitals@6.2.2: {}
 
   web-worker@1.5.0: {}
@@ -18955,6 +19006,8 @@ snapshots:
     optional: true
 
   yocto-queue@0.1.0: {}
+
+  zen-observable@0.10.0: {}
 
   zod-validation-error@3.5.4(zod@3.25.58):
     dependencies:
